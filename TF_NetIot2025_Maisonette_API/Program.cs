@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TF_NetIot2025_Maisonette_API.Entities.Contexts;
+using TF_NetIot2025_Maisonette_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyDbContext>( o => 
     o.UseSqlServer("server=(localdb)\\MSSQLLocalDB;database=MaisonetteDb;integrated security=true;trust server certificate=true")
 );
+
+builder.Services.AddSingleton<MqttService>();
+builder.Services.AddSingleton<IHostedService>(sp => sp.GetRequiredService<MqttService>());
 
 builder.Services.AddCors(p => p.AddDefaultPolicy(b => b
     .WithOrigins("http://localhost:4200")

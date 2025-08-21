@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TF_NetIot2025_Maisonette_API.Entities;
 using TF_NetIot2025_Maisonette_API.Entities.Contexts;
+using TF_NetIot2025_Maisonette_API.Services;
 
 namespace TF_NetIot2025_Maisonette_API.Controllers
 {
@@ -10,10 +11,12 @@ namespace TF_NetIot2025_Maisonette_API.Controllers
     {
 
         private readonly MyDbContext _dbContext;
+        private readonly MqttService _mqttService;
 
-        public HouseStateController(MyDbContext dbContext)
+        public HouseStateController(MyDbContext dbContext, MqttService mqttService)
         {
             _dbContext = dbContext;
+            _mqttService = mqttService;
         }
 
         [HttpGet]
@@ -25,10 +28,12 @@ namespace TF_NetIot2025_Maisonette_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult ToggleLight()
+        public async Task<IActionResult> ToggleLight()
         {
             // Contacter maisonnette pour allumer lampe
             Console.WriteLine("Toggle!!!");
+
+            await _mqttService.PublishAsync("maisonnette/light", "");
             
             return NoContent();
         }
