@@ -1,0 +1,4 @@
+docker run -it --name mosquitto -p 1883:1883 -p 9001:9001 -v $(pwd)/mosquitto.conf:/mosquitto/config/mosquitto.conf eclipse-mosquitto
+
+en powershell
+docker run -it --name mosquitto -p 1883:1883 -p 9001:9001 -v ${PWD}/mosquitto.conf:/mosquitto/config/mosquitto.conf eclipse-mosquitto
